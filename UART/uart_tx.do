@@ -14,7 +14,7 @@ if [file exists work] {
 vlib work
 
 # compile source files
-vlog uart_rx_autobaud.sv uart_rx_autobaud_tb.sv
+vlog uart_tx.sv uart_tx_tb.sv
 
 # start and run simulation
 vsim +nowarn3829 -error 3015 -voptargs=+acc -l transcript.txt work.testbench
@@ -41,6 +41,6 @@ configure wave -rowmargin 4
 configure wave -childrowmargin 2
 
 -- Run the Simulation
-run 10000 ns
+run 15000000 ns
 
 quit
