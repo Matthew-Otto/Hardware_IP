@@ -46,7 +46,7 @@ end
 
 always @(posedge clk, posedge areset) begin
     if (areset) begin
-        shift_reg <= 0;
+        shift_reg <= 10'b1;
         state <= IDLE;
         clk_cnt <= 0;
         bit_cnt <= 0;
