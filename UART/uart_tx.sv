@@ -1,3 +1,5 @@
+// UART TX module
+
 module uart_tx #(CLK_RATE, BAUD_RATE)(
     input clk,
     input areset,
@@ -48,7 +50,6 @@ always @(posedge clk, posedge areset) begin
     if (areset) begin
         shift_reg <= 10'b1;
         state <= IDLE;
-        clk_cnt <= 0;
         bit_cnt <= 0;
     end else begin
         case (state) 
@@ -62,21 +63,21 @@ always @(posedge clk, posedge areset) begin
             LOAD : begin
                 shift_reg <= {1'b1, data_reg, 1'b0};  // little endian (STOP, data, START)
 
-                clk_cnt <= 0;
+                clk_cnt <= CLKS_PER_BAUD - 2;
                 bit_cnt <= 0;
                 state <= WAIT;
             end
 
             WAIT : begin
-                if (clk_cnt > CLKS_PER_BAUD)
+                if (clk_cnt == 0)
                     state <= SHIFT;
                 else
                     state <= WAIT;
-                clk_cnt <= clk_cnt + 1;
+                clk_cnt <= clk_cnt - 1;
             end
 
             SHIFT : begin
-                clk_cnt <= 0;
+                clk_cnt <= CLKS_PER_BAUD - 2;
                 if (bit_cnt+1 < PACKET_SIZE) begin
                     state <= WAIT;
                     bit_cnt <= bit_cnt + 1;
