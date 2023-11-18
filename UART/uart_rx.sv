@@ -1,4 +1,9 @@
-// autobaud UART RX module
+// UART RX module
+
+// 100MHz - 1MBaud
+// FLOP_LATCH 56
+// LUT 49
+// CARRY 8
 
 module uart_rx #(CLK_RATE, BAUD_RATE)(
     input clk,
@@ -7,7 +12,8 @@ module uart_rx #(CLK_RATE, BAUD_RATE)(
     input ready,
 
     output logic data_val,
-    output logic [7:0] data
+    output logic [7:0] data,
+    output logic baud_rate_error
 );
 
 localparam CLKS_PER_BAUD = int'(CLK_RATE / BAUD_RATE);
@@ -49,6 +55,7 @@ end
 always @(posedge clk, posedge areset) begin
     if (areset) begin
         state <= IDLE;
+        baud_rate_error <= 0;
     end else begin
         case (state)
             IDLE : begin
@@ -83,6 +90,8 @@ always @(posedge clk, posedge areset) begin
 
             STOP : begin
                 if (clk_cnt == HALF_CLKS_PER_BAUD) begin
+                    if (~rx)
+                        baud_rate_error <= 1;
                     state <= IDLE;
                 end else begin
                     clk_cnt <= clk_cnt + 1;
