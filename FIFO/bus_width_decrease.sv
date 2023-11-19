@@ -29,6 +29,8 @@ logic overflow;
 
 initial begin
     input_ready = 1;
+    output_valid = 0;
+    overflow = 0;
 end
 
 

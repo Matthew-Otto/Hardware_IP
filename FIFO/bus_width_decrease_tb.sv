@@ -21,8 +21,6 @@ bus_width_decrease #(.SIZE_IN(32), .SIZE_OUT(8)) dut (
     .output_valid(valid_out),
     .data_out(data_out)
 );
-
-assign output_ready = i % 5 == 0;
     
 // 1 ns clock
 initial begin
@@ -50,6 +48,12 @@ initial begin
     for (i=0; i < 100; i=i+1) begin
         
         @(posedge clk) begin
+            if (i % 5 == 0)
+                output_ready <= 1;
+
+            if (output_ready && valid_out)
+                output_ready <= 0;
+
             if (input_ready) begin
                 data_in = $urandom();
                 valid_in = 1;
