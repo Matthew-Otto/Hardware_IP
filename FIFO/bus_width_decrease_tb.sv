@@ -7,7 +7,7 @@ integer desc3;
 logic clk, reset, tx;
 logic [31:0] data_in;
 logic [7:0] data_out;
-logic valid_in, valid_out, input_ready;
+logic valid_in, valid_out, input_ready, output_ready;
 
 integer i;
 
@@ -17,9 +17,12 @@ bus_width_decrease #(.SIZE_IN(32), .SIZE_OUT(8)) dut (
     .input_ready(input_ready),
     .input_valid(valid_in),
     .data_in(data_in),
+    .output_ready(output_ready),
     .output_valid(valid_out),
     .data_out(data_out)
 );
+
+assign output_ready = i % 5 == 0;
     
 // 1 ns clock
 initial begin
@@ -34,7 +37,7 @@ end
 
 always begin
     @(posedge clk) begin
-        $fdisplay(desc3, "ready: %b | data_in: %h | valid_in: %b | data_out: %h | valid_out: %b", input_ready, data_in, valid_in, data_out, valid_out);
+        $fdisplay(desc3, "ready in: %b out: %b | data_in: %h | valid_in: %b | data_out: %h | valid_out: %b", input_ready, output_ready, data_in, valid_in, data_out, valid_out);
     end
 end
 
@@ -43,9 +46,8 @@ initial begin
     reset = 1'b0;
     #1 reset = 1'b1;
     #2 reset = 1'b0;
-
     
-    for (i=0; i < 20; i=i+1) begin
+    for (i=0; i < 100; i=i+1) begin
         
         @(posedge clk) begin
             if (input_ready) begin
