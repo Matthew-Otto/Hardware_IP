@@ -14,7 +14,7 @@ if [file exists work] {
 vlib work
 
 # compile source files
-vlog bus_width_adapter.sv bus_width_adapter_tb.sv
+vlog bus_width_decrease.sv bus_width_decrease_tb.sv
 
 # start and run simulation
 vsim +nowarn3829 -error 3015 -voptargs=+acc -l transcript.txt work.testbench
@@ -24,7 +24,7 @@ vsim +nowarn3829 -error 3015 -voptargs=+acc -l transcript.txt work.testbench
 
 -- display input and output signals as hexidecimal values
 # Diplays All Signals recursively
-add wave -hex -r /testbench/dut/*
+add wave -hex -r /testbench/*
 #add wave -noupdate -divider -height 32 "Title"
 
 

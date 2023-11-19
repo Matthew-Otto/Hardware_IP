@@ -12,13 +12,12 @@ logic valid_in, valid_out;
 integer i;
 
 // instantiate device to be tested
-bus_width_adapter #(.SIZE_IN(8), .SIZE_OUT(32)) dut (
+bus_width_increase #(.SIZE_IN(8), .SIZE_OUT(32)) dut (
     .clk(clk),
-    .reset(reset),
     .valid_in(valid_in),
-    .in(data_in),
+    .data_in(data_in),
     .valid_out(valid_out),
-    .out(data_out)
+    .data_out(data_out)
 );
     
 // 1 ns clock
@@ -47,7 +46,7 @@ initial begin
     data_in = $urandom();
     valid_in = 1;
 
-    for (i=0; i < 10; i=i+1) begin
+    for (i=0; i < 20; i=i+1) begin
         
         @(posedge clk) begin
             data_in = $urandom();
