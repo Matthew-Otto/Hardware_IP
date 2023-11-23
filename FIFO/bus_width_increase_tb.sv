@@ -4,19 +4,21 @@ module testbench();
 integer handle3;
 integer desc3;
 
-logic clk, reset, tx;
+logic clk, reset;
 logic [7:0] data_in;
 logic [31:0] data_out;
-logic valid_in, valid_out;
+logic valid_in, valid_out, input_ready, output_ready;
 
 integer i;
 
 // instantiate device to be tested
-bus_width_increase #(.SIZE_IN(8), .SIZE_OUT(32)) dut (
+bus_width_increase #(.SIZE_IN(8), .SIZE_OUT(32), .LITTLE_ENDIAN(0)) dut (
     .clk(clk),
-    .valid_in(valid_in),
+    .input_ready(input_ready),
+    .input_valid(valid_in),
     .data_in(data_in),
-    .valid_out(valid_out),
+    .output_ready(output_ready),
+    .output_valid(valid_out),
     .data_out(data_out)
 );
     
@@ -33,7 +35,7 @@ end
 
 always begin
     @(posedge clk) begin
-        $fdisplay(desc3, "data_in: %h | valid_in: %b | data_out: %h | valid_out: %b", data_in, valid_in, data_out, valid_out);
+        $fdisplay(desc3, "ready in: %b out: %b | data_in: %h | valid_in: %b | data_out: %h | valid_out: %b", input_ready, output_ready, data_in, valid_in, data_out, valid_out);
     end
 end
 
@@ -46,14 +48,22 @@ initial begin
     data_in = $urandom();
     valid_in = 1;
 
-    for (i=0; i < 20; i=i+1) begin
+    for (i=0; i < 100; i=i+1) begin
         
         @(posedge clk) begin
-            data_in = $urandom();
+            if (i % 5 == 0)
+                output_ready <= 1;
+
+            if (output_ready && valid_out)
+                output_ready <= 0;
+
+            if (input_ready) begin
+                data_in = $urandom();
+            end
         end
     end
 
-    $finish;
+    $finish();
 end
 
 endmodule // testbench

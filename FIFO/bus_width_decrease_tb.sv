@@ -4,7 +4,7 @@ module testbench();
 integer handle3;
 integer desc3;
 
-logic clk, reset, tx;
+logic clk, reset;
 logic [31:0] data_in;
 logic [7:0] data_out;
 logic valid_in, valid_out, input_ready, output_ready;

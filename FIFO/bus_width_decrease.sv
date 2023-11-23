@@ -5,15 +5,15 @@ module bus_width_decrease
 #(
     parameter SIZE_IN,
     parameter SIZE_OUT,
-    // TODO: find a more descriptive name
+
     parameter LITTLE_ENDIAN = 1  // When true, LSB of input bus is output first
 )(
-    input                 clk,
-    output logic          input_ready,
-    input                 input_valid,
-    input  [SIZE_IN-1:0]  data_in,
-    input                 output_ready,
-    output logic          output_valid,
+    input                       clk,
+    output logic                input_ready,
+    input                       input_valid,
+    input        [SIZE_IN-1:0]  data_in,
+    input                       output_ready,
+    output logic                output_valid,
     output logic [SIZE_OUT-1:0] data_out
 );
 
