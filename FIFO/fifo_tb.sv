@@ -8,6 +8,7 @@ logic clk, reset;
 logic valid_in, valid_out;
 logic ready_in, ready_out;
 logic [7:0] data_in, data_out;
+logic empty, almost_empty;
 
 integer i;
 
@@ -20,7 +21,9 @@ fifo #(.WIDTH(8), .DEPTH(10)) dut (
     .data_in_rdy(ready_in),
     .data_out(data_out),
     .data_out_val(valid_out),
-    .data_out_rdy(ready_out)
+    .data_out_rdy(ready_out),
+    .empty(empty),
+    .almost_empty(almost_empty)
 );
     
 // 1 ns clock

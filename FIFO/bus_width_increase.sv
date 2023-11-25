@@ -21,7 +21,7 @@ initial
 
 localparam BUFF_SIZE = SIZE_OUT / SIZE_IN;
     
-logic [$clog2(BUFF_SIZE)-1:0] ptr;  // TODO: check behavior when BUFF_SIZE is not a power of two (does $clog2 round down?)
+logic [$clog2(BUFF_SIZE)-1:0] ptr;  // TODO: check behavior when BUFF_SIZE is not a power of two
 logic [SIZE_OUT-1:0] input_buffer;
 logic [SIZE_IN-1:0] skid_buffer;
 logic overflow;
@@ -71,4 +71,4 @@ always @(posedge clk) begin
 end
 
 
-endmodule  // bus_width_adapter
+endmodule  // bus_width_increase
