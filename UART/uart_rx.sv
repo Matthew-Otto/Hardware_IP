@@ -16,8 +16,8 @@ module uart_rx #(CLK_RATE, BAUD_RATE)(
     output logic baud_rate_error
 );
 
-localparam CLKS_PER_BAUD = int'(CLK_RATE / BAUD_RATE);
-localparam HALF_CLKS_PER_BAUD = int'(CLK_RATE / (BAUD_RATE * 2));
+localparam CLKS_PER_BAUD = real'(CLK_RATE) / real'(BAUD_RATE);
+localparam HALF_CLKS_PER_BAUD = real'(CLK_RATE) / real'(BAUD_RATE * 2);
 
 
 logic [3:0] state;
@@ -34,7 +34,7 @@ logic [2:0] bit_cnt;
 logic [7:0] data_reg;
 logic flag;
 
-
+// generate ready signal
 always @(posedge clk, posedge areset) begin
     if (areset) begin
         data <= 8'bx;
@@ -100,7 +100,5 @@ always @(posedge clk, posedge areset) begin
         endcase
     end
 end
-
-
 
 endmodule // uart_rx

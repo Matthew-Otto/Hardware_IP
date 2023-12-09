@@ -17,24 +17,25 @@ assign testvector = {1'b1, 10'b1_01101000_0, 10'b1_01100101_0, 10'b1_01101100_0,
 
 
 // instantiate device to be tested
-uart_rx #(.CLK_RATE(10), .BAUD_RATE(1)) dut (
+uart_rx #(.CLK_RATE(8125), .BAUD_RATE(1200)) dut (
     .clk(clk),
     .areset(reset),
     .rx(rx),
     .data_val(data_val),
     .data(data),
-    .ready(1'b1)
+    .ready(1'b1),
+    .baud_rate_error()
 );
     
 // 1 ns clock
 initial begin
     clk = 1'b1;
-    forever #1 clk = ~clk;
+    forever #123 clk = ~clk;
 end
 
 initial begin
     uclk = 1'b1;
-    forever #10 uclk = ~uclk;
+    forever #833 uclk = ~uclk;
 end
 
 
@@ -51,6 +52,9 @@ end
 
 
 initial begin
+    $display("CLKS_PER_BAUD %d", dut.CLKS_PER_BAUD);
+    $display("HALF_CLKS_PER_BAUD %d", dut.HALF_CLKS_PER_BAUD);
+
     reset = 1'b0;
     #5 reset = 1'b1;
     #5 reset = 1'b0;
