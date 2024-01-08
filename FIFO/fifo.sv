@@ -36,7 +36,7 @@ assign data_out_val = ~empty;
 assign data_out = buffer[rd_ptr[ADDR_SIZE-1:0]];
 
 
-always @(posedge clk) begin
+always @(posedge clk, posedge reset) begin
     if (reset) begin
         wr_ptr <= 0;
         wr_ptr_of <= 0;
